@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+		<title>Project Infoviz 2017</title>
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+<!-- 		<script
+			src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+		<!-- <link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+
+
+		<style type="text/css">
+.row {
+	margin: 0px;
+}
+.bar {
+background-size: contain;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.bar:hover {
+  fill: steelblue;
+}
+
+	.axis {
+	  font: 12px;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #ddd;
+	  shape-rendering: crispEdges;
+	}
+	.link {
+  stroke: #aaa;
+}
+
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.node text {
+stroke:#333;
+cursos:pointer;
+}
+
+</style>
+
+		<link href="https://fonts.googleapis.com/css?family=Montserrat"
+
+			rel="stylesheet">
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- 		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+		<script src="http://d3js.org/topojson.v1.min.js"></script>
+		<script src="./js/datamaps.world.min.js"></script>
+		<script type="topojson.world"></script>
+		<script type="text/javascript">
+		// d3.json("slim-3.json"), function(error, dataFromSlimJsonFile) {
+		// 	d3.json("projectData.json"),function(error1,dataFromProjectJsonFile){
+				// for country in 
+
+				$( document ).ready(function(){
+					WorldMap();
+				});
+
+				function WorldMap() {
+			var basic_choropleth = new Datamap({
+				element : document.getElementById("map"),
+				projection : 'mercator',
+				fills : {
+					defaultFill : "#606060",
+					authorHasTraveledTo : "#FB0821"
+					// countrieswithnoarmy : "#2844D4"
+
+				},
+				
+
+				data : {
+					RUS : {
+						fillKey : "authorHasTraveledTo",
+						Count : 11000
+
+					},
+					USA : {
+						fillKey : "authorHasTraveledTo",
+						Count : 8500
+
+					},
+					FRA : {
+						fillKey : "authorHasTraveledTo",
+						Count : 300
+
+					},
+					CHN : {
+						fillKey : "authorHasTraveledTo",
+						Count : 240
+
+					},
+					UK : {
+						fillKey : "authorHasTraveledTo",
+						Count : 225
+
+					},
+					ISR : {
+						fillKey : "authorHasTraveledTo",
+						Count : 80
+
+					},
+					PAK : {
+						fillKey : "authorHasTraveledTo",
+						Count : 110
+
+					},
+					IND : {
+						fillKey : "authorHasTraveledTo",
+						Count : 90
+
+					},
+					PRK : {
+						fillKey : "authorHasTraveledTo",
+						Count : 20
+
+					},
+
+				}
+				 // data : {
+					// AND : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 45
+					// },
+					// CRI : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 20
+					// },
+					// DMA : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 5
+					// },
+					// GRD : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 10
+					// },
+					// HTI : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 24
+					// },
+					// ISL : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	// brands : 500
+					// },
+					// KIR : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// LIE : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// MHL : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// MUS : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// FSM : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// MCO : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// NRU : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// PLW : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// PAN : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// LCA : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// VCT : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// WSM : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// SLB : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// TUV : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					// VUT : {
+					// 	fillKey : "authorHasTraveledTo",
+					// 	brands : 12
+					// },
+					
+
+				},
+				
+
+
+
+
+
+
+				// done : function(datamap) {
+				// 	datamap.svg.selectAll('.datamaps-subunit').on('click',
+				// 			function(geography) {
+				// 				console.log(geography);
+				// 				alert(geography.id);
+				// 			});
+				}
+			});				
+		 	}
+		 }
+
+
+		</script>
+
+
+
+
+	</head>
+	<body>
+
+	<div id="map" class="col-sm-12 col-xs-12 col-lg-6 col-md-6"
+				style="height: 800px; width: 60%"></div>
+
+	<script type="text/javascript">
+	
+
+
+
+
+	</script>
+	</body>
+</html>

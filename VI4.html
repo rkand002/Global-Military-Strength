@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VI 4</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="can" align="center">
+  <h1 align="center">Visualization Implementation 4</h1>
+
+    <ul class="list-inline">
+    <li><a href="#can"><h3>PartA</h3></a></li>
+    <li><a href="#xyz"><h3>PartB</h3></a></li>
+    </ul>
+</div>
+
+</body>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://vega.github.io/vega/vega.js"></script>
+  <script src="https://vega.github.io/vega-lite/vega-lite.js"></script>
+  <script src="https://vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
+  <style media="screen">
+    /* Add space between vega-embed links  */
+    .vega-actions a {
+      margin-right: 5px;display: none;
+    }
+	</style>
+</head>
+<body>
+<div id="heading" style="margin-left: 200px"><b><h3>Number of Journals for each Publisher</h3></b></div>
+<center><div id="vis" style="margin-left: 30px"></div></center>
+<div id="xyz" style="margin-top: 30px" align="center">
+<ul class="list-inline">
+<li><a href="#can"><h3>PartA</h3></a></li>
+    <li><a href="#xyz"><h3>PartB</h3></a></li>
+    </ul>
+ </div>
+<div id="Secheading" style="margin-left: 200px"><b><h3>Average cost of an Article for each Publisher</h3></b></div>
+<center><div id="partb" style="margin-top: 30px; margin-left: 30px"></div></center>
+
+ <script>
+ $(document).ready(function(){
+ 	journal_count();
+	Avg_cost_article();
+
+ });
+
+ function journal_count()
+ {
+ 	var publisherarr=[], journalarrs = [],data=[];
+		d3.json("vi2-data-journals-xlsx.json", function(error,obj) {
+			//debugger;
+			//console.log(obj);
+			var jsonfilearrs= obj["rows"];
+
+			jsonfilearrs.forEach( function(item){
+				// console.log(item["Publisher"]);
+				if(publisherarr.indexOf(item["Publisher"]) < 0){
+					publisherarr.push(item["Publisher"]);
+				}				
+			});
+			//console.log(publisherarr)
+			for(var i=0;i<publisherarr.length;i++){
+				journalarrs[i] =[];
+				for(var j=0;j<jsonfilearrs.length;j++){
+					if(publisherarr[i] == jsonfilearrs[j]["Publisher"]){
+						if(journalarrs[i].indexOf(jsonfilearrs[j]["Journal title"])<0){
+							journalarrs[i].push(jsonfilearrs[j]["Journal title"]);
+						}
+					}
+				}
+			}
+			//console.log(journalarrs);
+			for (var i in journalarrs)
+			{
+				var temporaryArr = {"Publisher":publisherarr[i],"Count":journalarrs[i].length};
+				data.push(temporaryArr);
+			}
+		// console.log(data);
+		  // Assign the specification to a local variable vlSpec.
+			  var vlSpec = {
+			  "data": {
+			    "values": data
+			  },
+			  "mark": "bar",
+			  "width":800,"height":1200,
+			  "encoding": {
+			    "x": {
+			      "axis": {"labelMaxLength":70},
+			      "field": "Count",
+			      "type": "quantitative",
+			      "title":"Journal Count"  
+			    },
+			    "y": {
+			      "axis": {"labelMaxLength":70},
+			      "field": "Publisher",
+			      "type": "nominal",
+			      "title":"Publisher"  
+
+			    }
+			  }
+			};
+
+			  var embedSpec = {
+			    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
+			    spec: vlSpec
+			    // You can add more vega-embed configuration properties here.
+			    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
+			  };
+			  // Embed the visualization in the container with id `vis`
+			  vg.embed("#vis", embedSpec, function(error, result) {
+			    // Callback receiving the View instance and parsed Vega spec
+			    // result.view is the View, which resides under the '#vis' element
+			  });
+		});
+
+
+ 
+	}
+function Avg_cost_article(){
+
+	 	var publisherarr=[], journalarrs = [],data=[], articalarr = [],total=0,average;
+		d3.json("vi2-data-journals-xlsx.json", function(error,obj) {
+			debugger;
+			//console.log(obj);
+			var jsonfilearrs= obj["rows"];
+
+			jsonfilearrs.forEach( function(item){
+				// console.log(item["Publisher"]);
+				if(publisherarr.indexOf(item["Publisher"]) < 0){
+					publisherarr.push(item["Publisher"]);
+				}				
+			});
+			articalarr =[]
+			console.log(publisherarr)
+			for(var i=0;i<publisherarr.length;i++){
+				articalarr[i]  =[];
+				for(var j=0;j<jsonfilearrs.length;j++){
+				  if(publisherarr[i] == jsonfilearrs[j]["Publisher"]){
+					  	var cost = jsonfilearrs[j]["Cost"];
+						console.log(cost);
+						articalarr[i].push(cost);
+					}
+				}
+			}
+		
+			for (var i in articalarr)
+			{
+				total =0;
+				for(var j in articalarr[i]){
+						total+= parseFloat(articalarr[i][j]);
+			
+				average = parseFloat(total / articalarr[i].length);
+				var temporaryArr = {"Publisher":publisherarr[i],"AvgCost":average};
+				data.push(temporaryArr);
+			}
+		}
+		// console.log(data);
+		  // Assign the specification to a local variable vlSpec.
+			  var vlSpec = {
+			  "data": {
+			    "values": data
+			  },
+			  "mark": "bar",
+			  "width":800,
+			  "height":1200,
+			  "encoding": {
+			    "x": {
+			      "axis": {"labelMaxLength":70},
+			      "field": "AvgCost",
+			      "type": "quantitative",
+			      "title":"Average cost "  
+			    },
+			    "y": {
+  			      "axis": {"labelMaxLength":70},
+			      "field": "Publisher",
+			      "type": "nominal",
+			      "title":"Publisher"  
+
+			    }
+			  }
+			};
+
+			  var embedSpec = {
+			    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
+			    spec: vlSpec
+			    // You can add more vega-embed configuration properties here.
+			    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
+			  };
+			  // Embed the visualization in the container with id `vis`
+			  vg.embed("#partb", embedSpec, function(error, result) {
+			    // Callback receiving the View instance and parsed Vega spec
+			    // result.view is the View, which resides under the '#vis' element
+			  });
+		});
+
+}
+		
+
+	</script>
+<div style="margin-left: 20px"><p><h3>Describe your design decisions in building the charts. 
+What were the data types you used? 
+What idioms, marks, and channels did you chose? 
+What ordering decisions did you make?</h3>
+</p>
+<p>In creating these charts, I decided to use Horizontal Bar Charts. Since the visualization is simple. 
+
+I used Vegalite and stored all the neccesity data from the JSON file in arrays. 
+
+For chart 1, X-axis represents number of journals for each publisher. and Y-axis holds the data of the publishers.
+
+For chart 2, X-axis represents average cost of an article for each publisher, and Y-axis holds the data of the unique publishers.
+
+Idiom used is Horizontal Bar Chart, Marks used are line.
+Channels used are lenght.
+
+I ordered both the files alphabetically [Z-A].</p></div> 
+
+
+
+<div style="margin-left: 20px"><p><h3>Describe your experiences using the library to build the chart. What things were easy? What things were difficult?
+</h3></p>
+<p>I have a pleasent experience using vegalite library to built the chart. Pushing the final data seams to be easy in vegalite. 
+I have no difficulty in using this library.</p></div>
+</body>
+</html>
